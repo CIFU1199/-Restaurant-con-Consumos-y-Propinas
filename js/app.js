@@ -142,4 +142,108 @@ function guardarCliente(){
         const resultado = pedido.filter(articulo => articulo.id !== producto.id);
         cliente.pedido =[...resultado];
     }
+    limpiarHTML();
+    actualizarResumen();
  }
+ function actualizarResumen(){
+    const contenido = document.querySelector('#resumen .contenido');
+    const resumen = document.createElement('div');
+    resumen.classList.add('col-md-6', 'card','py-5','px-3','shadow');
+    // info de la mesa
+    const mesa = document.createElement('p');
+    mesa.textContent ='Mesa: ';
+    mesa.classList.add('fw-bold');
+
+    const mesaSpan = document.createElement('span');
+    mesaSpan.textContent = cliente.mesa;
+    mesaSpan.classList.add('fw-bold');
+    
+    // info de la hora 
+    const hora = document.createElement('p');
+    hora.textContent ='Hora: ';
+    hora.classList.add('fw-bold');
+
+    const horaSpan = document.createElement('span');
+    horaSpan.textContent = cliente.hora;
+    horaSpan.classList.add('fw-bold');
+
+    const heading = document.createElement('h3');
+    heading.textContent =  'Platillos Consumidos';
+    heading.classList.add('my-4', 'text-center');
+
+
+
+    //agregar a los elementos padre 
+    mesa.appendChild(mesaSpan);
+    hora.appendChild(horaSpan);
+    
+    //iterar sobre el array de pedidos 
+    const grupo = document.createElement('ul');
+    grupo.classList.add('list-group');
+    //Destructuring de Objeto
+    const {pedido} = cliente;
+    
+    pedido.forEach(articulo =>{
+        const {nombre ,  cantidad , precio ,id } = articulo;
+
+        const lista = document.createElement('li');
+        lista.classList.add('list-group-item');
+
+        //nombre
+        const nombreEL = document.createElement('h4');
+        nombreEL.classList.add('my-4');
+        nombreEL.textContent = nombre;
+
+        //cantidad del articulo 
+        const cantidadEL = document.createElement('p');
+        cantidadEL.classList.add('fw-bold');
+        cantidadEL.textContent = 'Cantidad: ';
+
+        const CantidadValor = document.createElement('span');
+        CantidadValor.classList.add('fw-normal');
+        CantidadValor.textContent = cantidad;
+
+        //agregar valores a sus contenedores 
+        
+
+        //Precio del articulo 
+
+        const precioEL = document.createElement('p');
+        precioEL.classList.add('fw-bold');
+        precioEL.textContent = 'Precio: ';
+
+        const precioValor = document.createElement('span');
+        precioValor.classList.add('fw-normal');
+        precioValor.textContent = `$${precio}`;
+        
+        ////agregar valores a sus contenedores
+        cantidadEL.appendChild(CantidadValor);
+        precioEL.appendChild(precioValor);
+
+        //Agregar los elementos al LI
+        lista.appendChild(nombreEL);
+        lista.appendChild(cantidadEL);
+        lista.appendChild(precioEL);
+        //lista.appendChild(idEL);
+
+        //agregar lista al grupo principal 
+        grupo.appendChild(lista);
+
+    })
+
+    //agregar al contenido 
+    resumen.appendChild(mesa);
+    resumen.appendChild(hora);
+    resumen.appendChild(heading);
+    resumen.appendChild(grupo);
+
+    contenido.appendChild(resumen);
+
+ }
+
+ function limpiarHTML(){
+    const contenido = document.querySelector('#resumen .contenido');
+    while (contenido.firstChild) {
+        contenido.removeChild(contenido.firstChild);
+    }
+}
