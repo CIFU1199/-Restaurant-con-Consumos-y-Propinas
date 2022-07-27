@@ -122,19 +122,24 @@ function guardarCliente(){
     let { pedido } = cliente;
 
     if(producto.cantidad > 0){
-        
         //comprueba si el elemento existe en el array
         if(pedido.some(articulo => articulo.id === producto.id)){
-
+                //el articulo ya existe, solo debemos actualizar la cantidad
+            const pedidoActualizado = pedido.map(articulo =>{
+                if(articulo.id === producto.id){
+                    articulo.cantidad = producto.cantidad;
+                }
+                return articulo;
+                // se asigna el nuevo array a cliente.pedido
+            });
+            cliente.pedido =[...pedidoActualizado];
         }else{
             // el articulo no existe lo agregamos al array de pedido
-            cliente.pedido = [...pedido.producto]; 
+            cliente.pedido = [...pedido, producto]; 
         }
-
-               
     }else{
-        console.log('No es mayor a 0');
+        //eliminar elementos cuando la cantidad es 0
+        const resultado = pedido.filter(articulo => articulo.id !== producto.id);
+        cliente.pedido =[...resultado];
     }
-
-    console.log(cliente.pedido);
  }
