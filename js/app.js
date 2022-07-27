@@ -122,7 +122,16 @@ function guardarCliente(){
     let { pedido } = cliente;
 
     if(producto.cantidad > 0){
-        cliente.pedido = [...pedido.producto];        
+        
+        //comprueba si el elemento existe en el array
+        if(pedido.some(articulo => articulo.id === producto.id)){
+
+        }else{
+            // el articulo no existe lo agregamos al array de pedido
+            cliente.pedido = [...pedido.producto]; 
+        }
+
+               
     }else{
         console.log('No es mayor a 0');
     }
